@@ -37,11 +37,23 @@ class FbScraper:
         names = [x.text for x in names_element]
         nicknames = []
         for link in links:
-            nickname = link.replace("https://www.facebook.com/", "")
-            nickname = nickname[:(len(nickname) - 10)]
-            if nickname[:(len(nickname) - 15)] == "profile.php?id=":
-                # print(nickname[(len(nickname) - 15):])
-                nickname = nickname[(len(nickname) - 15):]
+            nick_temp = link.replace("https://www.facebook.com/", "")
+            nickname = ""
+            print(nick_temp[:15])
+            if nick_temp[:15] == "profile.php?id=":
+                print(nick_temp[15:])
+                nick_temp= nick_temp[15:]
+                for i in nick_temp:
+                    if i == '&':
+                        break
+                    else:
+                        nickname += i
+            else:
+                for i in nick_temp:
+                    if i == '?':
+                        break
+                    else:
+                        nickname += i
             nicknames.append(nickname)
         return names, nicknames, links
 
@@ -101,7 +113,6 @@ class LinkedInScraper:
         return names, nicknames, positions, locations, links
 
     def getData(self,url):
-
         totalPeople={}
         listName={}
         for urlT in url:
@@ -115,8 +126,8 @@ class LinkedInScraper:
             else:
                 totalPeople[data["name"].lower()+"1"]=data
                 listName[data["name"].lower()]=2
-
         return totalPeople
+
     def colectData(self, url):
         dataPersonal ={}
 
@@ -202,11 +213,11 @@ class GithubScraper:
 
     def find_projects(self, gh_name):
         # github_id = str(input("Your github id: "))
-        # browser.get("https://github.com/"+ github_id)
+        self.driver.get("https://github.com/"+ gh_name)
 
-        titles_element = browser.find_elements_by_xpath("//a[@class='text-bold']")
+        titles_element = self.driver.find_elements_by_xpath("//a[@class='text-bold']")
         titles = [x.text for x in titles_element]
-        language_element = browser.find_elements_by_xpath("//p[@class='mb-0 f6 text-gray']")
+        language_element = self.driver.find_elements_by_xpath("//p[@class='mb-0 f6 text-gray']")
         languages = [x.text for x in language_element]
 
         print('titles:')
@@ -263,6 +274,34 @@ class TwitterScraper:
         # pi_result = PersonalityInsights(username="51436b66-0914-4989-9609-10b378b5ff3b", password="mC3iaLrPhYZ1").profile(text)
         # return pi_result
         return text
+def showData(data):
+    print(data.keys())
+    command=input("what do you want to know:?(type exit to get out)\n")
+    if(command=="experience"):
+            dem=0
+            for query in data[command]:
+                for value in query:
+                    dem+=1
+                    if (dem==1):
+                        print(value)
+                    elif (dem%2==0):
+                        print(value,end=": ")
+                    else:
+                        print(value)
+                print()
+                print("***************************")
+    if (command=="education"):
+        dem=0
+        for query in data[command]:
+            dem+=1
+            if (dem==1):
+                print(query)
+            elif (dem%2==0):
+                print(query,end=": ")
+            else:
+                print(query)
+        print()
+        print("***************************")
 
 def showResults(data):
     print(data.keys())
@@ -324,9 +363,47 @@ def stalkFacebook(fb_user_email,fb_user_password,stalk_name):
         print("Fb: " + fb_name + ", " + fb_nickname + ", " + fb_link)
         downI=input("download Image of this person(y/n)?")
         if (downI=="y"):
-            fb_scraper.downloadImage(fb_nickname,fb_link)
+            fb_scraper.downloadImage(fb_nickname, fb_link)
+
+def stalkLinkedIn(lk_user_email, lk_user_password, stalk_name):
+    lk_scraper = LinkedInScraper(lk_user_email, lk_user_password, stalk_name)
+    lk_names, lk_nicknames, lk_positions, lk_locations, lk_links = lk_scraper.find_links(stalk_name)
+
+    for lk_name, lk_nickname, lk_position, lk_location, lk_link in zip(lk_names, lk_nicknames, lk_positions, lk_locations, lk_links):
+        print("Lk: " + lk_name + ", " + lk_nickname + ", " + lk_position + ", " + lk_location + ", " + lk_link + "\n")
+        choice = input("Do you want to retrieve data of this person: (yes (y)/no (n)/break (b))?")
+        if choice == 'y':
+            showData(lk_scraper.colectData(lk_link))
+
+        elif choice == 'b':
+            break
+    dataLinkedIn=lk_scraper.getData(lk_links)
+    return dataLinkedIn
+
+def stalkTwitter(tt_user_email,tt_user_password,stalk_name):
+    # Twitter tracker
+    tt_scraper = TwitterScraper(tt_user_email, tt_user_password, tt_stalk_name)
+    tt_names, tt_nicknames, tt_links = tt_scraper.find_links(tt_stalk_name)
+    for tt_name, tt_nickname, tt_link in zip(tt_names, tt_nicknames, tt_links):
+        print("Tt: " + tt_name + ", " + tt_nickname + ": " + tt_link)
+        choice = input("Do you want to retrieve all tweets of this person: (yes (y)/no (n)/break (b))?")
+        if choice == 'y':
+            tt_scraper.analyze(tt_nickname)
+        elif choice == 'b':
+            break
 
 
+def stalkGithub(gh_user_email,gh_user_password,stalk_name):
+    # Github tracker
+    gh_scraper = GithubScraper(gh_user_email, gh_user_password, gh_stalk_name)
+    gh_nicknames, gh_links = gh_scraper.find_links(gh_stalk_name)
+    for gh_nickname, gh_link in zip(gh_nicknames, gh_links):
+        print("Gh: " + gh_nickname + ": " + gh_link)
+        choice = input("Do you want to retrieve all projects of this person: (yes (y)/no (n)/break (b))?")
+        if choice == 'y':
+            gh_scraper.find_projects(gh_nickname)
+        elif choice == 'b':
+            break
 
 if __name__ == '__main__':
     # Input user email and password
@@ -355,30 +432,28 @@ if __name__ == '__main__':
     gh_stalk_name = stalk_name.replace(' ', '+')
     tt_stalk_name = stalk_name.replace(' ', '%20')
 
+    choice = str(input("Choose your platform to stalk Linked/Facebook/Github/Twitter (l/f/g/t): "))
 
+    while choice != "exit":
+        if choice == 'f':
+            stalkFacebook(fb_user_email,fb_user_password,stalk_name)
+            choice = str(input("Choose your platform to stalk Linked/Facebook/Github/Twitter (l/f/g/t): "))
+        elif choice == 'l':
+            dataLinkedIn=stalkLinkedIn(lk_user_email, lk_user_password, stalk_name)
+            choice = str(input("Choose your platform to stalk Linked/Facebook/Github/Twitter (l/f/g/t): "))
+        elif choice == 'g':
+            stalkGithub(gh_user_email, gh_user_password, stalk_name)
+            choice = str(input("Choose your platform to stalk Linked/Facebook/Github/Twitter (l/f/g/t): "))
+        elif choice == 't':
+            stalkTwitter(tt_user_email, tt_user_password, stalk_name)
+            choice = str(input("Choose your platform to stalk Linked/Facebook/Github/Twitter (l/f/g/t): "))
+        else:
+            pass
     # Facebook tracker
-    stalkFacebook(fb_user_email,fb_user_password,stalk_name)
-
 
     # LinkedIn Tracker
-    lk_scraper = LinkedInScraper(lk_user_email, lk_user_password, stalk_name)
-    lk_names, lk_nicknames, lk_positions, lk_locations, lk_links = lk_scraper.find_links(stalk_name)
 
-    for lk_name, lk_nickname, lk_position, lk_location, lk_link in zip(lk_names, lk_nicknames, lk_positions, lk_locations, lk_links):
-        print("Lk: " + lk_name + ", " + lk_nickname + ", " + lk_position + ", " + lk_location + ", " + lk_link)
-    dataLinkedIn=lk_scraper.getData(lk_links)
 
-    # Github tracker
-    gh_scraper = GithubScraper(gh_user_email, gh_user_password, gh_stalk_name)
-    gh_nicknames, gh_links = gh_scraper.find_links(gh_stalk_name)
-    for gh_nickname, gh_link in zip(gh_nicknames, gh_links):
-        print("Gh: " + gh_nickname + ": " + gh_link)
-
-    # Twitter tracker
-    tt_scraper = TwitterScraper(tt_user_email, tt_user_password, tt_stalk_name)
-    tt_names, tt_nicknames, tt_links = tt_scraper.find_links(tt_stalk_name)
-    for tt_name, tt_nickname, tt_link in zip(tt_names, tt_nicknames, tt_links):
-        print("Tt: " + tt_name + ", " + tt_nickname + ": " + tt_link)
 
     # fb_scraper.getData(fb_links)
     showResults(dataLinkedIn)
