@@ -12,8 +12,8 @@ import getpass
 
 class FbScraper:
     def __init__(self, email, password, fb_name):
-        option = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(executable_path='C:/Users/ngoct/Downloads/chromedriver_win32/chromedriver', chrome_options=option)
+        # option = webdriver.ChromeOptions()
+        self.driver = webdriver.Chrome()
         self.login(email, password)
 
     def __del__(self):
@@ -64,8 +64,8 @@ class FbScraper:
 
 class LinkedInScraper:
     def __init__(self, email, password, lk_name):
-        option = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(executable_path='C:/Users/ngoct/Downloads/chromedriver_win32/chromedriver', chrome_options=option)
+        # option = webdriver.ChromeOptions()
+        self.driver = webdriver.Chrome()
         self.login(email, password)
 
     def __del__(self):
@@ -93,23 +93,24 @@ class LinkedInScraper:
             nicknames.append(nickname[:(len(nickname) - 1)])
         return names, nicknames, positions, locations, links
 
-        def getData(self, username, password,url):
-            self.driver.get('https://www.linkedin.com/')
-            self.driver.find_element_by_id('login-email').send_keys(username)
-            self.driver.find_element_by_id('login-password').send_keys(password)
-            self.driver.find_element_by_id('login-submit').click()
-            totalPeople={}
-            listName=[]
-            for urlT in url:
-                data=self.colectData(username, password,urlT)
-                totalPeople[data["name"].lower()]=data
-                listName.append(data["name"].lower())
-            return totalPeople
+    def getData(self,url):
 
-        def __del__(self):
-            self.driver.close()
+        totalPeople={}
+        listName={}
+        for urlT in url:
+            data=self.colectData(urlT)
+            # print(data["name"])
+            if ( (data["name"].lower()+"1") in totalPeople ):
+                # print(data["name"])
+                newName=data["name"].lower()+str(listName[data["name"].lower()])
+                listName[data["name"].lower()]+=1
+                totalPeople[newName]=data
+            else:
+                totalPeople[data["name"].lower()+"1"]=data
+                listName[data["name"].lower()]=2
 
-    def colectData(self, username, password,url):
+        return totalPeople
+    def colectData(self, url):
         dataPersonal ={}
 
         self.driver.get(url)
@@ -169,8 +170,8 @@ class LinkedInScraper:
 
 class GithubScraper:
     def __init__(self, email, password, gh_name):
-        option = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(executable_path='C:/Users/ngoct/Downloads/chromedriver_win32/chromedriver', chrome_options=option)
+        # option = webdriver.ChromeOptions()
+        self.driver = webdriver.Chrome()
         self.login(email, password)
 
     def __del__(self):
@@ -213,8 +214,8 @@ class GithubScraper:
 
 class TwitterScraper:
     def __init__(self, email, password, tt_name):
-        option = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(executable_path='C:/Users/ngoct/Downloads/chromedriver_win32/chromedriver', chrome_options=option)
+        # option = webdriver.ChromeOptions()
+        self.driver = webdriver.Chrome()
         self.login(email, password)
 
     def __del__(self):
@@ -323,6 +324,14 @@ if __name__ == '__main__':
 
     # Specifying accounts to stalk (default)
 
+    fb_user_email = "stalkerchan0211@gmail.com"
+    fb_user_password = "ngoctien0211"
+    lk_user_email = "stalkerchan0211@gmail.com"
+    lk_user_password = "ngoctien0211"
+    gh_user_email = "stalkerchan0211@gmail.com"
+    gh_user_password = "ngoctien0211"
+    tt_user_email = "stalkerchan0211@gmail.com"
+    tt_user_password = "ngoctien0211"
     stalk_name = str(input("I'm stalker-chan, who do you to find: "))
     fb_stalk_name = stalk_name.replace(' ', '%20')
     lk_stalk_name = stalk_name.replace(' ', '%20')
@@ -340,6 +349,7 @@ if __name__ == '__main__':
 
     for lk_name, lk_nickname, lk_position, lk_location, lk_link in zip(lk_names, lk_nicknames, lk_positions, lk_locations, lk_links):
         print("Lk: " + lk_name + ", " + lk_nickname + ", " + lk_position + ", " + lk_location + ", " + lk_link)
+    dataLinkedIn=lk_scraper.getData(lk_links)
 
     # Github tracker
     gh_scraper = GithubScraper(gh_user_email, gh_user_password, gh_stalk_name)
@@ -352,3 +362,5 @@ if __name__ == '__main__':
     tt_names, tt_nicknames, tt_links = tt_scraper.find_links(tt_stalk_name)
     for tt_name, tt_nickname, tt_link in zip(tt_names, tt_nicknames, tt_links):
         print("Tt: " + tt_name + ", " + tt_nickname + ": " + tt_link)
+
+    showResults(dataLinkedIn)
