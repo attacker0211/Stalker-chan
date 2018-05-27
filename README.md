@@ -1,4 +1,4 @@
-# Stalker-chan:
+# Stalker Chan
 Python Script used to stalk public information of a person on multiple social media platform
 We can have the option to retrieve all public data of a person we want to stalk on LinkedIn, download all the images of a person we want to stalk on Facebook, retrieve all tweets of a person (public tweets) or retrieve all projects and language of the project of a person on Github.
 
