@@ -9,9 +9,9 @@ cd Stalker-chan
 ```
 
 ### Run the script:
-* Configure you email and password in find.py file or uncomment Input user email and password lines.
+* Configure your email and password in find.py file or uncomment Input user email and password lines.
 * Make sure you have python 3 installed on your local machine
-* Install the require packages, including: `selenium`, `twitter`, `requests`
+* Install the required packages, including: `selenium`, `twitter`, `requests`
 * Install Chromedriver, run the server and then run our script:
 ```sh 
 python find.py
