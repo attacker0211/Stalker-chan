@@ -254,11 +254,11 @@ class TwitterScraper:
         nicknames = [x.text for x in nicknames_element]
         return names, nicknames, links
 
-    def analyze(handle):
-        twitter_consumer_key = ''
-        twitter_consumer_secret = ''
-        twitter_access_token = ''
-        twitter_access_secret = ''
+    def analyze(self, handle):
+        twitter_consumer_key = 'RlmaUEBD3JgtZVNQKtPemsK6X'
+        twitter_consumer_secret = 'kY4cKm3I8ufiGOtl6KKO1IAT1KEXZkvNi8q8xAyrctxUfWS0cR'
+        twitter_access_token = '138995970-0vM69xrQyKwUKhHVFSkX3vCTybmIbN4oaUUAB124'
+        twitter_access_secret = 'z4BKyca97FEhk2CUmkYA59rI7ufo8GINLdMuAk8bKJmUq'
 
         twitter_api = twitter.Api(consumer_key = twitter_consumer_key,
                         consumer_secret = twitter_consumer_secret,
@@ -302,6 +302,8 @@ def showData(data):
                 print(query)
         print()
         print("***************************")
+    else:
+        print(data[command])
 
 def showResults(data):
     print(data.keys())
@@ -356,6 +358,9 @@ def showResults(data):
                     print(query)
             print()
             print("***************************")
+        else:
+            print(data[it][command])
+
 def stalkFacebook(fb_user_email,fb_user_password,stalk_name):
     fb_scraper = FbScraper(fb_user_email, fb_user_password, stalk_name)
     fb_names, fb_nicknames, fb_links = fb_scraper.find_links(stalk_name)
@@ -370,11 +375,10 @@ def stalkLinkedIn(lk_user_email, lk_user_password, stalk_name):
     lk_names, lk_nicknames, lk_positions, lk_locations, lk_links = lk_scraper.find_links(stalk_name)
 
     for lk_name, lk_nickname, lk_position, lk_location, lk_link in zip(lk_names, lk_nicknames, lk_positions, lk_locations, lk_links):
-        print("Lk: " + lk_name + ", " + lk_nickname + ", " + lk_position + ", " + lk_location + ", " + lk_link + "\n")
+        # print("Lk: " + lk_name + ", " + lk_nickname + ", " + lk_position + ", " + lk_location + ", " + lk_link + "\n")
         choice = input("Do you want to retrieve data of this person: (yes (y)/no (n)/break (b))?")
         if choice == 'y':
             showData(lk_scraper.colectData(lk_link))
-
         elif choice == 'b':
             break
     dataLinkedIn=lk_scraper.getData(lk_links)
