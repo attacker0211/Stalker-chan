@@ -45,15 +45,15 @@ class FbScraper:
             nicknames.append(nickname)
         return names, nicknames, links
 
-    def getData(self, urls):
+    def getData(self,name, urls):
         for url in urls:
             data=self.downloadImage(url)
+
             # print(data["name"])
 
-    def downloadImage(self, url):
+    def downloadImage(self,name, url):
         dataPersonal ={}
         link=url[:-10]+"/photos"
-        name=url[25:-10]
         self.driver.get(link)
         # workPlace=self.driver.find_element_by_id("//*[@id='u_y_0']")
         #names
@@ -62,9 +62,12 @@ class FbScraper:
         if not os.path.exists(name):
             os.makedirs(name)
         for image in images:
-            src = image.get_attribute("src")
-            urllib.request.urlretrieve(src,".\\"+name+"\im"+str(count)+".png")
-            count+=1
+            try:
+                src = image.get_attribute("src")
+                urllib.request.urlretrieve(src,".\\"+name+"\im"+str(count)+".png")
+                count+=1
+            except Exception:
+                pass
 
 class LinkedInScraper:
     def __init__(self, email, password, lk_name):
@@ -314,6 +317,16 @@ def showResults(data):
                     print(query)
             print()
             print("***************************")
+def stalkFacebook(fb_user_email,fb_user_password,stalk_name):
+    fb_scraper = FbScraper(fb_user_email, fb_user_password, stalk_name)
+    fb_names, fb_nicknames, fb_links = fb_scraper.find_links(stalk_name)
+    for fb_name, fb_nickname, fb_link in zip(fb_names, fb_nicknames, fb_links):
+        print("Fb: " + fb_name + ", " + fb_nickname + ", " + fb_link)
+        downI=input("download Image of this person(y/n)?")
+        if (downI=="y"):
+            fb_scraper.downloadImage(fb_nickname,fb_link)
+
+
 
 if __name__ == '__main__':
     # Input user email and password
@@ -341,11 +354,11 @@ if __name__ == '__main__':
     lk_stalk_name = stalk_name.replace(' ', '%20')
     gh_stalk_name = stalk_name.replace(' ', '+')
     tt_stalk_name = stalk_name.replace(' ', '%20')
+
+
     # Facebook tracker
-    fb_scraper = FbScraper(fb_user_email, fb_user_password, stalk_name)
-    fb_names, fb_nicknames, fb_links = fb_scraper.find_links(stalk_name)
-    for fb_name, fb_nickname, fb_link in zip(fb_names, fb_nicknames, fb_links):
-        print("Fb: " + fb_name + ", " + fb_nickname + ", " + fb_link)
+    stalkFacebook(fb_user_email,fb_user_password,stalk_name)
+
 
     # LinkedIn Tracker
     lk_scraper = LinkedInScraper(lk_user_email, lk_user_password, stalk_name)
