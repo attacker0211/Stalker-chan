@@ -73,10 +73,7 @@ if __name__ == '__main__':
     # fb_user_password = getpass.getpass('Facebook password: ')
     # lk_user_email = str(input("Your LinkedIn email: "))
     # lk_user_password = getpass.getpass('Linked password: ')
-    fb_user_email = "stalkerchan0211@gmail.com"
-    fb_user_password = "ngoctien0211"
-    lk_user_email = "stalkerchan0211@gmail.com"
-    lk_user_password = "ngoctien0211"
+
     stalk_name = str(input("I'm stalker-chan, who do you to find: ")).replace(' ', '%20')
 
     # Facebook tracker
