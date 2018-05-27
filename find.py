@@ -9,6 +9,10 @@ import requests
 import json
 import twitter
 import getpass
+import os
+from urllib.request import urlopen
+import urllib
+from urllib import request
 
 class FbScraper:
     def __init__(self, email, password, fb_name):
@@ -43,7 +47,7 @@ class FbScraper:
 
     def getData(self, urls):
         for url in urls:
-            data=self.colectData(url)
+            data=self.downloadImage(url)
             # print(data["name"])
 
     def downloadImage(self, url):
@@ -324,7 +328,14 @@ if __name__ == '__main__':
 
     # Specifying accounts to stalk (default)
 
-
+    fb_user_email = "stalkerchan0211@gmail.com"
+    fb_user_password = "ngoctien0211"
+    lk_user_email = "stalkerchan0211@gmail.com"
+    lk_user_password = "ngoctien0211"
+    gh_user_email = "stalkerchan0211@gmail.com"
+    gh_user_password = "ngoctien0211"
+    tt_user_email = "stalkerchan0211@gmail.com"
+    tt_user_password = "ngoctien0211"
     stalk_name = str(input("I'm stalker-chan, who do you to find: "))
     fb_stalk_name = stalk_name.replace(' ', '%20')
     lk_stalk_name = stalk_name.replace(' ', '%20')
@@ -356,4 +367,5 @@ if __name__ == '__main__':
     for tt_name, tt_nickname, tt_link in zip(tt_names, tt_nicknames, tt_links):
         print("Tt: " + tt_name + ", " + tt_nickname + ": " + tt_link)
 
+    # fb_scraper.getData(fb_links)
     showResults(dataLinkedIn)
