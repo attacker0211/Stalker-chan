@@ -324,14 +324,7 @@ if __name__ == '__main__':
 
     # Specifying accounts to stalk (default)
 
-    fb_user_email = "stalkerchan0211@gmail.com"
-    fb_user_password = "ngoctien0211"
-    lk_user_email = "stalkerchan0211@gmail.com"
-    lk_user_password = "ngoctien0211"
-    gh_user_email = "stalkerchan0211@gmail.com"
-    gh_user_password = "ngoctien0211"
-    tt_user_email = "stalkerchan0211@gmail.com"
-    tt_user_password = "ngoctien0211"
+
     stalk_name = str(input("I'm stalker-chan, who do you to find: "))
     fb_stalk_name = stalk_name.replace(' ', '%20')
     lk_stalk_name = stalk_name.replace(' ', '%20')
