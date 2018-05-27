@@ -255,10 +255,10 @@ class TwitterScraper:
         return names, nicknames, links
 
     def analyze(self, handle):
-        twitter_consumer_key = 'RlmaUEBD3JgtZVNQKtPemsK6X'
-        twitter_consumer_secret = 'kY4cKm3I8ufiGOtl6KKO1IAT1KEXZkvNi8q8xAyrctxUfWS0cR'
-        twitter_access_token = '138995970-0vM69xrQyKwUKhHVFSkX3vCTybmIbN4oaUUAB124'
-        twitter_access_secret = 'z4BKyca97FEhk2CUmkYA59rI7ufo8GINLdMuAk8bKJmUq'
+        twitter_consumer_key = 'your consumer key'
+        twitter_consumer_secret = 'your consumer secret'
+        twitter_access_token = 'your access token'
+        twitter_access_secret = 'your access secret'
 
         twitter_api = twitter.Api(consumer_key = twitter_consumer_key,
                         consumer_secret = twitter_consumer_secret,
@@ -410,26 +410,18 @@ def stalkGithub(gh_user_email,gh_user_password,stalk_name):
             break
 
 if __name__ == '__main__':
-    # Input user email and password
-    # fb_user_email = str(input("Your Facebook email: "))
-    # fb_user_password = getpass.getpass('Facebook password: ')
-    # lk_user_email = str(input("Your LinkedIn email: "))
-    # lk_user_password = getpass.getpass('Linked password: ')
-    # gh_user_email = str(input("Your Github email: "))
-    # gh_user_password = getpass.getpass('Github password: ')
-    # tt_user_email = str(input("Your Twitter email: "))
-    # tt_user_password = getpass.getpass('Twitter password: ')
+    Input user email and password
+    fb_user_email = str(input("Your Facebook email: "))
+    fb_user_password = getpass.getpass('Facebook password: ')
+    lk_user_email = str(input("Your LinkedIn email: "))
+    lk_user_password = getpass.getpass('Linked password: ')
+    gh_user_email = str(input("Your Github email: "))
+    gh_user_password = getpass.getpass('Github password: ')
+    tt_user_email = str(input("Your Twitter email: "))
+    tt_user_password = getpass.getpass('Twitter password: ')
 
     # Specifying accounts to stalk (default)
 
-    fb_user_email = "stalkerchan0211@gmail.com"
-    fb_user_password = "ngoctien0211"
-    lk_user_email = "stalkerchan0211@gmail.com"
-    lk_user_password = "ngoctien0211"
-    gh_user_email = "stalkerchan0211@gmail.com"
-    gh_user_password = "ngoctien0211"
-    tt_user_email = "stalkerchan0211@gmail.com"
-    tt_user_password = "ngoctien0211"
     stalk_name = str(input("I'm stalker-chan, who do you to find: "))
     fb_stalk_name = stalk_name.replace(' ', '%20')
     lk_stalk_name = stalk_name.replace(' ', '%20')
