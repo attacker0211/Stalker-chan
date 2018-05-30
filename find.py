@@ -271,7 +271,7 @@ class TwitterScraper:
             if (s.lang == 'en'):
                 text += str(s.text.encode('utf-8'))
 
-        # pi_result = PersonalityInsights(username="51436b66-0914-4989-9609-10b378b5ff3b", password="mC3iaLrPhYZ1").profile(text)
+        # pi_result = PersonalityInsights(username="", password="").profile(text)
         # return pi_result
         return text
 def showData(data):
