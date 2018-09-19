@@ -3,6 +3,9 @@ Python Script used to stalk public information of a person on multiple social me
 
 We can have the option to retrieve all public data of a person we want to stalk on LinkedIn, download all the images of a person we want to stalk on Facebook, retrieve all tweets of a person (public tweets) or retrieve all projects and language of the project of a person on Github.
 
+This code is written in a hackathon so it's a little bit messy.
+If the code doesn't code, check again and change facebook login input html id to fix Facebook scraping.
+
 ### Installation:
 ```sh
 git clone https://github.com/attacker0211/Stalker-chan.git
